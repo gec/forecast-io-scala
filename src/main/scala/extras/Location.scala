@@ -29,7 +29,7 @@ object Location {
       catch { case e: Exception => "{\"results\" : []}" }
     }
 
-    val json = JsonObject.readFrom(raw)
+    val json = Json.parse(raw).asObject()
     val results = json.get("results").asArray.values
 
     if(results.size > 0) {

@@ -1,6 +1,6 @@
 package com.film42.forecastioapi
 
-import com.eclipsesource.json.JsonObject
+import com.eclipsesource.json.Json
 import com.film42.forecastioapi.model._
 import org.scalatest._
 import com.film42.forecastioapi._
@@ -97,7 +97,7 @@ class ForecastIOSpec extends FunSpec {
     import model.ForecastJsonProtocol._
 
     lazy val jsonString = Source.fromURL(this.getClass.getResource("/test_response_nyc.json")).getLines().mkString("\n")
-    lazy val forecastJson = jsonString.asJson.asJsObject
+    lazy val forecastJson = jsonString.parseJson.asJsObject
 
     it("parses timezone") {
       assert(forecastJson.getFields("timezone")(0).convertTo[String] == "Asia/Bishkek")
@@ -122,14 +122,14 @@ class ForecastIOSpec extends FunSpec {
     it("parses Daily") {
       // Use separate json parser until Case Class limit is lifted
       val jsonString = forecastJson.getFields("daily")(0).toJson.toString()
-      val json = JsonObject.readFrom(jsonString)
+      val json = Json.parse(jsonString).asObject()
       assert(new Daily(json) != null)
     }
 
     it("parses Flags") {
       // Use separate json parser until Case Class limit is lifted
       val jsonString = forecastJson.getFields("flags")(0).toJson.toString()
-      val json = JsonObject.readFrom(jsonString)
+      val json = Json.parse(jsonString).asObject()
       assert(new Flags(json) != null)
     }
 

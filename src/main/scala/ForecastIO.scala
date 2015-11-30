@@ -1,6 +1,7 @@
 package com.film42.forecastioapi
 
 import com.eclipsesource.json.JsonObject
+import com.eclipsesource.json.Json
 import java.net.URL
 import java.util.{Date, Scanner}
 import spray.json._
@@ -49,7 +50,7 @@ class Forecast(apiKey: String, lat: String, lon: String, units: String, date: Da
     }
     val s = new Scanner(u.openStream(), "UTF-8")
     try {
-      s.useDelimiter("\\A").next().asJson
+      s.useDelimiter("\\A").next().parseJson
     } catch {
       case e: Exception => throw new Exception(e.getMessage)
     } finally {
@@ -88,14 +89,14 @@ class Forecast(apiKey: String, lat: String, lon: String, units: String, date: Da
   def flags: Flags = {
     // Use separate json parser until Case Class limit is lifted
     val jsonString = forecastJson.getFields("flags")(0).toJson.toString()
-    val json = JsonObject.readFrom(jsonString)
+    val json = Json.parse(jsonString).asObject()
     new Flags(json)
   }
 
   def daily: Daily = {
     // Use separate json parser until Case Class limit is lifted
     val jsonString = forecastJson.getFields("daily")(0).toJson.toString()
-    val json = JsonObject.readFrom(jsonString)
+    val json = Json.parse(jsonString).asObject()
     new Daily(json)
   }
 
