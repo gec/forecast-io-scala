@@ -55,14 +55,14 @@ case class HourDataPoint(
   precipProbability: Double,
   temperature: Double,
   apparentTemperature: Double,
-  dewPoint: Double,
-  humidity: Double,
-  windSpeed: Double,
-  windBearing: Double,
+  dewPoint: Option[Double],
+  humidity: Option[Double],
+  windSpeed: Option[Double],
+  windBearing: Option[Double],
   visibility: Option[Double],
-  cloudCover: Double,
+  cloudCover: Option[Double],
   pressure: Double,
-  ozone: Double) extends DT { def datetime = new Date(time * 1000L) }
+  ozone: Option[Double]) extends DT { def datetime = new Date(time * 1000L) }
 
 case class Hourly(
   summary: String,
@@ -109,14 +109,14 @@ class DayDataPoint(json: JsonObject) extends DT {
   def apparentTemperatureMax: Double = json.get("apparentTemperatureMax").asDouble
   def apparentTemperatureMaxTime: Int = json.get("apparentTemperatureMaxTime").asInt
   def apparentTemperatureMaxDateTime: Date = new Date(apparentTemperatureMaxTime * 1000L)
-  def dewPoint: Double = json.get("dewPoint").asDouble
-  def humidity: Double = json.get("humidity").asDouble
-  def windSpeed: Double = json.get("windSpeed").asDouble
-  def windBearing: Double = json.get("windBearing").asDouble
+  def dewPoint: Option[Double] = Try(json.get("dewPoint").asDouble).toOption
+  def humidity: Option[Double] = Try(json.get("humidity").asDouble).toOption
+  def windSpeed: Option[Double] = Try(json.get("windSpeed").asDouble).toOption
+  def windBearing: Option[Double] = Try(json.get("windBearing").asDouble).toOption
   def visibility: Option[Double] = Try(json.get("visibility").asDouble).toOption
-  def cloudCover: Double = json.get("cloudCover").asDouble
+  def cloudCover: Option[Double] = Try(json.get("cloudCover").asDouble).toOption
   def pressure: Double = json.get("pressure").asDouble
-  def ozone: Double = json.get("ozone").asDouble
+  def ozone: Option[Double] = Try(json.get("ozone").asDouble).toOption
 }
 
 object ForecastJsonProtocol extends DefaultJsonProtocol {

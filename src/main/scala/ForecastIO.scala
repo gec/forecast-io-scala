@@ -108,4 +108,7 @@ class Forecast(apiKey: String, lat: String, lon: String, units: String, date: Da
     a.alerts
   }
 
+  def asJson = forecastJson
+  def asJsonString = forecastJson.prettyPrint
+  def asJsonStringCompact = forecastJson.compactPrint
 }

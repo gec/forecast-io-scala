@@ -2,7 +2,7 @@ name := "forecast-io-api"
 
 organization := "com.film42"
 
-version := "0.0.1"
+version := "0.0.1-SNAPSHOT"
 
 scalaVersion := "2.10.4"
 
@@ -19,3 +19,5 @@ libraryDependencies ++= Seq(
 initialCommands := "import com.film42.forecastioapi._"
 
 scalacOptions += "-deprecation"
+
+publishMavenStyle := true
