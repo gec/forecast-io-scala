@@ -44,7 +44,7 @@ case class CurrentDataPoint(
   windBearing: Double,
   visibility: Option[Double],
   cloudCover: Double,
-  pressure: Double,
+  pressure: Option[Double],
   ozone: Option[Double]) extends DT { def datetime = new Date(time * 1000L) }
 
 case class HourDataPoint(
@@ -61,7 +61,7 @@ case class HourDataPoint(
   windBearing: Option[Double],
   visibility: Option[Double],
   cloudCover: Option[Double],
-  pressure: Double,
+  pressure: Option[Double],
   ozone: Option[Double]) extends DT { def datetime = new Date(time * 1000L) }
 
 case class Hourly(
@@ -115,7 +115,7 @@ class DayDataPoint(json: JsonObject) extends DT {
   def windBearing: Option[Double] = Try(json.get("windBearing").asDouble).toOption
   def visibility: Option[Double] = Try(json.get("visibility").asDouble).toOption
   def cloudCover: Option[Double] = Try(json.get("cloudCover").asDouble).toOption
-  def pressure: Double = json.get("pressure").asDouble
+  def pressure: Option[Double] = Try(json.get("pressure").asDouble).toOption
   def ozone: Option[Double] = Try(json.get("ozone").asDouble).toOption
 }
 
